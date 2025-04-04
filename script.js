@@ -157,7 +157,45 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please rank all images before proceeding');
             return;
         }
-        window.location.href = 'index2.html';
+
+        // Store current page rankings before navigating
+        const rankings = Array.from(imageItems)
+            .map(item => ({
+                imageId: item.querySelector('.super-res-image').src.split('/').pop(),
+                rank: parseInt(item.dataset.rank)
+            }))
+            .sort((a, b) => a.rank - b.rank);
+
+        console.log('Saving page 1 rankings:', rankings);
+        
+        try {
+            // Save to localStorage
+            localStorage.setItem('page_1_rankings', JSON.stringify(rankings));
+            
+            // Verify the rankings were saved
+            const savedRankings = localStorage.getItem('page_1_rankings');
+            console.log('Saved rankings from localStorage:', savedRankings);
+            
+            if (!savedRankings) {
+                alert('Error saving rankings. Please try again.');
+                return;
+            }
+
+            // Add a small delay to ensure localStorage operation completes
+            setTimeout(() => {
+                // Verify again before navigating
+                const verifyRankings = localStorage.getItem('page_1_rankings');
+                if (!verifyRankings) {
+                    alert('Error saving rankings. Please try again.');
+                    return;
+                }
+                console.log('Verified rankings before navigation:', verifyRankings);
+                window.location.href = 'index2.html';
+            }, 500);
+        } catch (error) {
+            console.error('Error saving rankings:', error);
+            alert('Error saving rankings. Please try again.');
+        }
     });
 
     // Initialize the page
