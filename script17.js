@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
     const resetBtn = document.getElementById('reset-btn');
     const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
@@ -205,6 +206,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
             window.location.href = 'index16.html';
+        });
+    }
+
+    // Enable the Next button if all images are ranked
+    if (nextBtn) {
+        nextBtn.disabled = !checkAllRanked();
+    }
+
+    // Add next button event listener
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            window.location.href = 'index18.html';
         });
     }
 

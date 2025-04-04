@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-btn');
     const submitBtn = document.getElementById('submit-btn');
     const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
@@ -297,6 +298,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add submit button event listener
     if (submitBtn) {
         submitBtn.addEventListener('click', submitRankings);
+    }
+
+    // Enable the Next button if all images are ranked
+    if (nextBtn) {
+        nextBtn.disabled = !checkAllRanked();
+    }
+
+    // Add next button event listener
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            window.location.href = 'index17.html';
+        });
     }
 
     // Initialize the page
