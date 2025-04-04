@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
