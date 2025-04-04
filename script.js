@@ -32,16 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load super-resolved images
         superResImages.forEach((img, index) => {
             const imagePath = `./image1/${imageFiles[index]}`;
-            console.log(`Loading image: ${imagePath}`);
+            console.log(`Loading image ${index + 1}: ${imagePath}`);
+            console.log(`Image element:`, img);
             img.src = imagePath;
             img.onload = () => {
-                console.log(`Successfully loaded: ${imageFiles[index]}`);
+                console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
                 console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
             };
             img.onerror = (e) => {
-                console.error(`Error loading image: ${imageFiles[index]}`);
+                console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
                 console.error(`Image path: ${imagePath}`);
                 console.error(`Error details:`, e);
+                console.error(`Image element:`, img);
             };
         });
 
