@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index < imageFiles.length) {
                 const imagePath = `./image1/${imageFiles[index]}`;
                 console.log(`Loading image ${index + 1}: ${imagePath}`);
-                console.log(`Image element:`, img);
                 img.src = imagePath;
                 img.onload = () => {
                     console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
                     console.error(`Image path: ${imagePath}`);
                     console.error(`Error details:`, e);
-                    console.error(`Image element:`, img);
                 };
             } else {
                 console.warn(`No image file defined for index ${index}`);
