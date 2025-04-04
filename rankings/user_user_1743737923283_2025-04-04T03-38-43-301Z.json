@@ -1,0 +1,366 @@
+{
+  "Page 2": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 3
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 3": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": null
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": null
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": null
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": null
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": null
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": null
+    }
+  ],
+  "Page 4": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 3
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 5": [
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 1
+    },
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 2
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 3
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 4
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 6": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 7": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 4
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 8": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 2
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 3
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 4
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 5
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 9": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 2
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 3
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 4
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 5
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 10": [
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 1
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 2
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 3
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 5
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 6
+    }
+  ],
+  "Page 11": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 5
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 12": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 4
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 13": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 5
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 14": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 3
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 5
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 15": [
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 1
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 3
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 5
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 6
+    }
+  ]
+}

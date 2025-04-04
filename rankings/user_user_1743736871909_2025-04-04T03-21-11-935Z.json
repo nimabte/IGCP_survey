@@ -1,0 +1,54 @@
+{
+  "Page 2": [
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 1
+    },
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 2
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 3
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 5
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 6
+    }
+  ],
+  "Page 15": [
+    {
+      "imageId": "2_VQFR.jpg",
+      "rank": 1
+    },
+    {
+      "imageId": "3_codeformer.png",
+      "rank": 2
+    },
+    {
+      "imageId": "5_GPEN.png",
+      "rank": 3
+    },
+    {
+      "imageId": "4_DR2.jpg",
+      "rank": 4
+    },
+    {
+      "imageId": "6_GFPGAN.jpg",
+      "rank": 5
+    },
+    {
+      "imageId": "1_IGCP-v1.png",
+      "rank": 6
+    }
+  ]
+}
