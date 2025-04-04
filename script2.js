@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add navigation button event listeners
     prevBtn.addEventListener('click', () => {
-        window.location.href = 'index1.html';
+        window.location.href = 'index3.html';
     });
 
     nextBtn.addEventListener('click', () => {
