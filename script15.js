@@ -44,9 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = 'image1/ref.png';
+        referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = () => console.error('Error loading reference image');
+        referenceImage.onerror = (e) => {
+            console.error('Error loading reference image:', e);
+            console.error('Reference image path:', referenceImage.src);
+        };
         
         // Define the image filenames in order
         const imageFiles = [
@@ -64,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load super-resolved images
         superResImages.forEach((img, index) => {
             if (index < imageFiles.length) {
-                const imagePath = `image1/${imageFiles[index]}`;
+                const imagePath = `./image1/${imageFiles[index]}`;
                 console.log(`Loading image ${index + 1}: ${imagePath}`);
                 img.src = imagePath;
                 img.onload = () => {
