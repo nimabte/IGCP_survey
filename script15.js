@@ -20,6 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
         database = firebase.database();
         console.log('Firebase initialized successfully');
+
+        // Test write to Firebase
+        const testRef = database.ref('test');
+        testRef.set({
+            timestamp: Date.now(),
+            status: 'connected'
+        })
+        .then(() => console.log('Test write to Firebase successful'))
+        .catch(error => console.error('Test write failed:', error));
     } catch (error) {
         console.error('Error initializing Firebase:', error);
         alert('Error initializing database. Please check console for details.');
@@ -174,7 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Database not initialized');
             }
 
-            // Save current page rankings first
+            // Check if all images are ranked
+            if (!areAllImagesRanked()) {
+                throw new Error('Please rank all images before submitting');
+            }
+
+            // Get current page rankings first
             const currentPageRankings = Array.from(imageItems)
                 .map(item => ({
                     imageId: item.querySelector('.super-res-image').src.split('/').pop(),
@@ -182,14 +196,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }))
                 .sort((a, b) => a.rank - b.rank);
 
-            console.log('Current page rankings:', currentPageRankings);
+            console.log('Current page (15) rankings:', currentPageRankings);
 
-            // Save current page rankings to localStorage
+            // Save page 15 rankings to localStorage first
             try {
                 localStorage.setItem('page_15_rankings', JSON.stringify(currentPageRankings));
-                console.log('Saved current page rankings to localStorage');
+                console.log('Successfully saved page 15 rankings to localStorage');
             } catch (e) {
-                console.error('Error saving to localStorage:', e);
+                console.error('Error saving page 15 rankings to localStorage:', e);
+                throw new Error('Failed to save page 15 rankings');
             }
 
             // Get or create user ID
@@ -202,7 +217,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Collect all available page rankings
             const allRankings = {};
-            for (let page = 1; page <= 15; page++) {
+            
+            // Add page 15 rankings first
+            allRankings['Page 15'] = currentPageRankings;
+            
+            // Then add other pages
+            for (let page = 1; page <= 14; page++) {
                 const pageRankings = localStorage.getItem(`page_${page}_rankings`);
                 if (pageRankings) {
                     try {
@@ -216,11 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (Object.keys(allRankings).length === 0) {
-                throw new Error('No rankings found to submit');
-            }
-
-            console.log('Attempting to save rankings to Firebase:', allRankings);
+            console.log('Final rankings to save:', allRankings);
 
             // Save to Firebase
             const rankingsRef = database.ref('rankings/' + userId);
@@ -229,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rankings: allRankings
             });
 
-            console.log('Successfully saved to Firebase');
+            console.log('Successfully saved all rankings to Firebase');
 
             // Clear local storage after successful submission
             for (let page = 1; page <= 15; page++) {
