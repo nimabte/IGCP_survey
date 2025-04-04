@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
             '4_DR2.jpg',
             '5_GPEN.png',
             '6_GFPGAN.jpg',
-            '4_DR2.jpg',
-            '5_GPEN.png',
-            '6_GFPGAN.jpg',
+            '7_DR2.jpg',
+            '8_GPEN.png',
+            '9_GFPGAN.jpg',
         ];
         
         // Load super-resolved images
