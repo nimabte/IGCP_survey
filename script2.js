@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prev-btn');
     let currentRank = 1;
 
-    // Function to load images from the image2 folder
+    // Function to load images from the image1 folder
     function loadImages() {
         console.log('Starting to load images for page 2...');
         
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = 'image2/ref.png';
+        referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
         referenceImage.onerror = () => console.error('Error loading reference image');
         
@@ -32,24 +32,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
-            const imagePath = `./image2/${imageFiles[index]}`;
-            console.log(`Loading image ${index + 1}: ${imagePath}`);
-            console.log(`Image element:`, img);
-            img.src = imagePath;
-            img.onload = () => {
-                console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
-                console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
-            };
-            img.onerror = (e) => {
-                console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
-                console.error(`Image path: ${imagePath}`);
-                console.error(`Error details:`, e);
-                console.error(`Image element:`, img);
-                // Try loading from image1 directory as fallback
-                const fallbackPath = `./image1/${imageFiles[index]}`;
-                console.log(`Trying fallback path: ${fallbackPath}`);
-                img.src = fallbackPath;
-            };
+            if (index < imageFiles.length) {
+                const imagePath = `./image1/${imageFiles[index]}`;
+                console.log(`Loading image ${index + 1}: ${imagePath}`);
+                console.log(`Image element:`, img);
+                img.src = imagePath;
+                img.onload = () => {
+                    console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                    console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+                };
+                img.onerror = (e) => {
+                    console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
+                    console.error(`Image path: ${imagePath}`);
+                    console.error(`Error details:`, e);
+                    console.error(`Image element:`, img);
+                };
+            } else {
+                console.warn(`No image file defined for index ${index}`);
+            }
         });
 
         // Initialize comparison sliders
