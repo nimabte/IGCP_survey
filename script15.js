@@ -41,7 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Starting to load images for page 15...');
         
         const referenceImage = document.getElementById('reference-img');
+        if (!referenceImage) {
+            console.error('Reference image element not found');
+            return;
+        }
+        
         const superResImages = document.querySelectorAll('.super-res-image');
+        if (superResImages.length === 0) {
+            console.error('No super-resolved images found');
+            return;
+        }
         
         // Load reference image
         referenceImage.src = './image1/ref.png';
@@ -93,9 +102,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const sliders = document.querySelectorAll('.comparison-slider');
         const referenceImage = document.getElementById('reference-img');
         
+        if (!referenceImage) {
+            console.error('Reference image not found for slider initialization');
+            return;
+        }
+        
         sliders.forEach(slider => {
-            const imageWrapper = slider.closest('.image-item').querySelector('.image-wrapper');
+            const imageWrapper = slider.closest('.image-item')?.querySelector('.image-wrapper');
+            if (!imageWrapper) {
+                console.error('Image wrapper not found for slider');
+                return;
+            }
+            
             const superResImage = imageWrapper.querySelector('.super-res-image');
+            if (!superResImage) {
+                console.error('Super-resolved image not found for slider');
+                return;
+            }
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
@@ -131,7 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
             .length;
         const allRanked = rankedCount === 9;
-        nextButton.disabled = !allRanked;
+        if (nextButton) {
+            nextButton.disabled = !allRanked;
+        }
         console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
         return allRanked;
     }
@@ -141,10 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (rank) {
-                overlay.textContent = rank;
-            } else {
-                overlay.textContent = '';
+            if (overlay) {
+                overlay.textContent = rank || '';
             }
         });
     }
@@ -152,6 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle image click
     function handleImageClick(e) {
         const imageItem = e.currentTarget.closest('.image-item');
+        if (!imageItem) return;
+        
         const currentItemRank = imageItem.dataset.rank;
 
         if (currentItemRank) {
@@ -204,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Get current page rankings first
             const currentPageRankings = Array.from(imageItems)
                 .map(item => ({
-                    imageId: item.querySelector('.super-res-image').src.split('/').pop(),
+                    imageId: item.querySelector('.super-res-image')?.src.split('/').pop(),
                     rank: parseInt(item.dataset.rank)
                 }))
                 .sort((a, b) => a.rank - b.rank);
@@ -277,33 +302,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
         const wrapper = item.querySelector('.image-wrapper');
-        wrapper.addEventListener('click', handleImageClick);
+        if (wrapper) {
+            wrapper.addEventListener('click', handleImageClick);
+        } else {
+            console.error('Image wrapper not found for item:', item);
+        }
     });
 
     // Add reset button event listener
-    resetButton.addEventListener('click', resetRankings);
+    if (resetButton) {
+        resetButton.addEventListener('click', resetRankings);
+    }
 
     // Add navigation button event listeners
-    prevButton.addEventListener('click', () => {
-        window.location.href = 'index14.html';
-    });
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
+            window.location.href = 'index14.html';
+        });
+    }
 
-    nextButton.addEventListener('click', () => {
-        // Store current page rankings before navigating
-        const rankings = Array.from(imageItems)
-            .map(item => ({
-                imageId: item.querySelector('.super-res-image').src.split('/').pop(),
-                rank: parseInt(item.dataset.rank)
-            }))
-            .sort((a, b) => a.rank - b.rank);
+    if (nextButton) {
+        nextButton.addEventListener('click', () => {
+            // Store current page rankings before navigating
+            const rankings = Array.from(imageItems)
+                .map(item => ({
+                    imageId: item.querySelector('.super-res-image')?.src.split('/').pop(),
+                    rank: parseInt(item.dataset.rank)
+                }))
+                .sort((a, b) => a.rank - b.rank);
 
-        localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
-        console.log('Saved page 15 rankings:', rankings);
-        window.location.href = 'index16.html';
-    });
+            localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
+            console.log('Saved page 15 rankings:', rankings);
+            window.location.href = 'index16.html';
+        });
+    }
 
     // Add submit button event listener
-    submitButton.addEventListener('click', submitRankings);
+    if (submitButton) {
+        submitButton.addEventListener('click', submitRankings);
+    }
 
     // Initialize the page
     loadImages();
