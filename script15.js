@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('userId');
 
             alert('Thank you for your participation! Your rankings have been saved successfully.');
-            window.location.href = '/thank-you.html';
+            window.location.href = '/thankyou.html';
         } catch (error) {
             console.error('Error submitting rankings:', error);
             alert('Error saving rankings: ' + error.message);
