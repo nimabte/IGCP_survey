@@ -64,9 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = 'image1/ref.png';
+        const refPath = 'image1/ref.png';
+        console.log(`Loading reference image from: ${refPath}`);
+        referenceImage.src = refPath;
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = () => console.error('Error loading reference image');
+        referenceImage.onerror = (e) => {
+            console.error('Error loading reference image:', e);
+            console.error('Reference image path:', refPath);
+        };
         
         // Define the image filenames in order
         const imageFiles = [
@@ -80,14 +85,27 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
+            if (index >= imageFiles.length) {
+                console.error(`No image file defined for index ${index}`);
+                return;
+            }
+            
             const imagePath = `image1/${imageFiles[index]}`;
-            console.log(`Loading image: ${imagePath}`);
+            console.log(`Loading image ${index + 1} from: ${imagePath}`);
+            
             img.src = imagePath;
-            img.onload = () => console.log(`Successfully loaded: ${imageFiles[index]}`);
-            img.onerror = (e) => console.error(`Error loading image: ${imageFiles[index]}`, e);
+            img.onload = () => {
+                console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                console.log('Image dimensions:', img.naturalWidth, 'x', img.naturalHeight);
+            };
+            img.onerror = (e) => {
+                console.error(`Error loading image ${index + 1}:`, e);
+                console.error('Image path:', imagePath);
+            };
         });
 
         // Initialize comparison sliders
+        console.log('Initializing comparison sliders...');
         initializeSliders();
     }
 
