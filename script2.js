@@ -24,16 +24,28 @@ document.addEventListener('DOMContentLoaded', () => {
             '3_codeformer.png',
             '4_DR2.jpg',
             '5_GPEN.png',
-            '6_GFPGAN.jpg'
+            '6_GFPGAN.jpg',
+            '7_PULSE.jpg',
+            '1_IGCP-v1.png',  // Reusing first image for now
+            '2_VQFR.jpg'      // Reusing second image for now
         ];
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
-            const imagePath = `image1/${imageFiles[index]}`;
-            console.log(`Loading image: ${imagePath}`);
+            const imagePath = `./image1/${imageFiles[index]}`;
+            console.log(`Loading image ${index + 1}: ${imagePath}`);
+            console.log(`Image element:`, img);
             img.src = imagePath;
-            img.onload = () => console.log(`Successfully loaded: ${imageFiles[index]}`);
-            img.onerror = (e) => console.error(`Error loading image: ${imageFiles[index]}`, e);
+            img.onload = () => {
+                console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+            };
+            img.onerror = (e) => {
+                console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
+                console.error(`Image path: ${imagePath}`);
+                console.error(`Error details:`, e);
+                console.error(`Image element:`, img);
+            };
         });
 
         // Initialize comparison sliders
@@ -82,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const rankedCount = Array.from(imageItems)
             .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
             .length;
-        const allRanked = rankedCount === 6;
+        const allRanked = rankedCount === 9;
         nextBtn.disabled = !allRanked;
-        console.log(`Ranked images: ${rankedCount}/6, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
         return allRanked;
     }
 
@@ -122,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRank = rankedItems.length + 1;
         } else {
             // If not ranked and we haven't ranked all images
-            if (currentRank <= 6) {
+            if (currentRank <= 9) {
                 imageItem.dataset.rank = currentRank.toString();
                 currentRank++;
             }
