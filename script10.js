@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = 'image1/ref.png';
+        referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
         referenceImage.onerror = () => console.error('Error loading reference image');
         
@@ -24,16 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
             '3_codeformer.png',
             '4_DR2.jpg',
             '5_GPEN.png',
-            '6_GFPGAN.jpg'
+            '6_GFPGAN.jpg',
+            '7_PULSE.jpg',
+            '1_IGCP-v1.png',  // Reusing first image for now
+            '2_VQFR.jpg'      // Reusing second image for now
         ];
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
-            const imagePath = `image1/${imageFiles[index]}`;
-            console.log(`Loading image: ${imagePath}`);
-            img.src = imagePath;
-            img.onload = () => console.log(`Successfully loaded: ${imageFiles[index]}`);
-            img.onerror = (e) => console.error(`Error loading image: ${imageFiles[index]}`, e);
+            if (index < imageFiles.length) {
+                const imagePath = `./image1/${imageFiles[index]}`;
+                console.log(`Loading image ${index + 1}: ${imagePath}`);
+                img.src = imagePath;
+                img.onload = () => {
+                    console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                    console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+                };
+                img.onerror = (e) => {
+                    console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
+                    console.error(`Image path: ${imagePath}`);
+                    console.error(`Error details:`, e);
+                };
+            } else {
+                console.warn(`No image file defined for index ${index}`);
+            }
         });
 
         // Initialize comparison sliders
@@ -79,8 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if all images are ranked
     function checkAllRanked() {
-        const rankedCount = Array.from(imageItems).filter(item => item.dataset.rank !== '').length;
-        nextBtn.disabled = rankedCount !== 6;
+        const rankedCount = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
+            .length;
+        const allRanked = rankedCount === 9;
+        nextBtn.disabled = !allRanked;
+        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        return allRanked;
     }
 
     // Function to update rank overlays
@@ -116,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRank = rankedItems.length + 1;
         } else {
             // If not ranked and we haven't ranked all images
-            if (currentRank <= 6) {
+            if (currentRank <= 9) {
                 imageItem.dataset.rank = currentRank.toString();
                 currentRank++;
             }
@@ -147,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add navigation button event listeners
     prevBtn.addEventListener('click', () => {
-        window.location.href = 'index8.html';
+        window.location.href = 'index9.html';
     });
 
     nextBtn.addEventListener('click', () => {
