@@ -153,10 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener('click', resetRankings);
 
     // Add navigation button event listeners
-    prevBtn.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
-
     nextBtn.addEventListener('click', () => {
         if (!checkAllRanked()) {
             alert('Please rank all images before proceeding');
