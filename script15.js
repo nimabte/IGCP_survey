@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit-btn');
     const resetButton = document.getElementById('reset-btn');
     const prevButton = document.getElementById('prev-btn');
+    const nextButton = document.getElementById('next-btn');
+    let currentRank = 1;
 
     // Initialize Firebase with error handling
     let database;
@@ -34,59 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Error initializing database. Please check console for details.');
     }
 
-    // Function to check if all images are ranked
-    function areAllImagesRanked() {
-        return Array.from(imageItems).every(item => item.dataset.rank !== '0');
-    }
-
-    // Function to update rank overlay
-    function updateRankOverlay(item) {
-        const rankOverlay = item.querySelector('.rank-overlay');
-        const rank = item.dataset.rank;
-        rankOverlay.textContent = rank === '0' ? '' : rank;
-    }
-
-    // Function to handle image click for ranking
-    function handleImageClick(item) {
-        const currentRank = parseInt(item.dataset.rank);
-        const nextRank = currentRank === 0 ? 1 : 0;
-        
-        // Reset all ranks if clicking a ranked image
-        if (currentRank !== 0) {
-            imageItems.forEach(img => {
-                img.dataset.rank = '0';
-                updateRankOverlay(img);
-            });
-            return;
-        }
-
-        // Find the next available rank
-        const usedRanks = new Set(Array.from(imageItems)
-            .map(img => parseInt(img.dataset.rank))
-            .filter(rank => rank > 0));
-        
-        let newRank = 1;
-        while (usedRanks.has(newRank)) {
-            newRank++;
-        }
-
-        item.dataset.rank = newRank.toString();
-        updateRankOverlay(item);
-
-        // Enable/disable submit button based on ranking completion
-        submitButton.disabled = !areAllImagesRanked();
-    }
-
-    // Function to reset rankings
-    function resetRankings() {
-        imageItems.forEach(item => {
-            item.dataset.rank = '0';
-            updateRankOverlay(item);
-        });
-        submitButton.disabled = true;
-    }
-
-    // Function to load images
+    // Function to load images from the image1 folder
     function loadImages() {
         console.log('Starting to load images for page 15...');
         
@@ -94,14 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        const refPath = 'image1/ref.png';
-        console.log(`Loading reference image from: ${refPath}`);
-        referenceImage.src = refPath;
+        referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = (e) => {
-            console.error('Error loading reference image:', e);
-            console.error('Reference image path:', refPath);
-        };
+        referenceImage.onerror = () => console.error('Error loading reference image');
         
         // Define the image filenames in order
         const imageFiles = [
@@ -110,32 +55,33 @@ document.addEventListener('DOMContentLoaded', () => {
             '3_codeformer.png',
             '4_DR2.jpg',
             '5_GPEN.png',
-            '6_GFPGAN.jpg'
+            '6_GFPGAN.jpg',
+            '7_PULSE.jpg',
+            '1_IGCP-v1.png',  // Reusing first image for now
+            '2_VQFR.jpg'      // Reusing second image for now
         ];
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
-            if (index >= imageFiles.length) {
-                console.error(`No image file defined for index ${index}`);
-                return;
+            if (index < imageFiles.length) {
+                const imagePath = `./image1/${imageFiles[index]}`;
+                console.log(`Loading image ${index + 1}: ${imagePath}`);
+                img.src = imagePath;
+                img.onload = () => {
+                    console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                    console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+                };
+                img.onerror = (e) => {
+                    console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
+                    console.error(`Image path: ${imagePath}`);
+                    console.error(`Error details:`, e);
+                };
+            } else {
+                console.warn(`No image file defined for index ${index}`);
             }
-            
-            const imagePath = `image1/${imageFiles[index]}`;
-            console.log(`Loading image ${index + 1} from: ${imagePath}`);
-            
-            img.src = imagePath;
-            img.onload = () => {
-                console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
-                console.log('Image dimensions:', img.naturalWidth, 'x', img.naturalHeight);
-            };
-            img.onerror = (e) => {
-                console.error(`Error loading image ${index + 1}:`, e);
-                console.error('Image path:', imagePath);
-            };
         });
 
         // Initialize comparison sliders
-        console.log('Initializing comparison sliders...');
         initializeSliders();
     }
 
@@ -176,6 +122,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Function to check if all images are ranked
+    function checkAllRanked() {
+        const rankedCount = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
+            .length;
+        const allRanked = rankedCount === 9;
+        nextButton.disabled = !allRanked;
+        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        return allRanked;
+    }
+
+    // Function to update rank overlays
+    function updateRankOverlays() {
+        imageItems.forEach(item => {
+            const overlay = item.querySelector('.rank-overlay');
+            const rank = item.dataset.rank;
+            if (rank) {
+                overlay.textContent = rank;
+            } else {
+                overlay.textContent = '';
+            }
+        });
+    }
+
+    // Function to handle image click
+    function handleImageClick(e) {
+        const imageItem = e.currentTarget.closest('.image-item');
+        const currentItemRank = imageItem.dataset.rank;
+
+        if (currentItemRank) {
+            // If already ranked, remove rank
+            imageItem.dataset.rank = '';
+            currentRank = 1; // Reset current rank
+            // Reorder remaining ranks
+            const rankedItems = Array.from(imageItems)
+                .filter(item => item.dataset.rank !== '')
+                .sort((a, b) => parseInt(a.dataset.rank) - parseInt(b.dataset.rank));
+            
+            rankedItems.forEach((item, index) => {
+                item.dataset.rank = (index + 1).toString();
+            });
+            currentRank = rankedItems.length + 1;
+        } else {
+            // If not ranked and we haven't ranked all images
+            if (currentRank <= 9) {
+                imageItem.dataset.rank = currentRank.toString();
+                currentRank++;
+            }
+        }
+
+        updateRankOverlays();
+        checkAllRanked();
+    }
+
+    // Function to reset rankings
+    function resetRankings() {
+        imageItems.forEach(item => {
+            item.dataset.rank = '';
+        });
+        currentRank = 1;
+        updateRankOverlays();
+        checkAllRanked();
+    }
+
     // Function to submit rankings
     async function submitRankings() {
         try {
@@ -184,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Check if all images are ranked
-            if (!areAllImagesRanked()) {
+            if (!checkAllRanked()) {
                 throw new Error('Please rank all images before submitting');
             }
 
@@ -261,15 +271,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add event listeners
+    // Add click event listeners to image wrappers
     imageItems.forEach(item => {
-        item.addEventListener('click', () => handleImageClick(item));
+        const wrapper = item.querySelector('.image-wrapper');
+        wrapper.addEventListener('click', handleImageClick);
     });
 
+    // Add reset button event listener
     resetButton.addEventListener('click', resetRankings);
+
+    // Add navigation button event listeners
     prevButton.addEventListener('click', () => {
         window.location.href = 'index14.html';
     });
+
+    nextButton.addEventListener('click', () => {
+        // Store current page rankings before navigating
+        const rankings = Array.from(imageItems)
+            .map(item => ({
+                imageId: item.querySelector('.super-res-image').src.split('/').pop(),
+                rank: parseInt(item.dataset.rank)
+            }))
+            .sort((a, b) => a.rank - b.rank);
+
+        localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
+        console.log('Saved page 15 rankings:', rankings);
+        window.location.href = 'index16.html';
+    });
+
+    // Add submit button event listener
     submitButton.addEventListener('click', submitRankings);
 
     // Initialize the page
