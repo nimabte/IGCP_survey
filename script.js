@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to check if all images are ranked
     function checkAllRanked() {
         const rankedCount = Array.from(imageItems)
-            .filter(item => item.dataset.rank !== '0')
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
             .length;
         const allRanked = rankedCount === 6;
         nextBtn.disabled = !allRanked;
@@ -158,10 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     nextBtn.addEventListener('click', () => {
-        // Check if all images are ranked
-        const rankedCount = Array.from(imageItems).filter(item => item.dataset.rank !== '').length;
-        if (rankedCount !== 6) {
-            alert('Please rank all images before proceeding.');
+        if (!checkAllRanked()) {
+            alert('Please rank all images before proceeding');
             return;
         }
 
@@ -173,36 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }))
             .sort((a, b) => a.rank - b.rank);
 
-        console.log('Saving page 1 rankings:', rankings);
-        
-        try {
-            // Save to localStorage
-            localStorage.setItem('page_1_rankings', JSON.stringify(rankings));
-            
-            // Verify the rankings were saved
-            const savedRankings = localStorage.getItem('page_1_rankings');
-            console.log('Saved rankings from localStorage:', savedRankings);
-            
-            if (!savedRankings) {
-                alert('Error saving rankings. Please try again.');
-                return;
-            }
-
-            // Add a small delay to ensure localStorage operation completes
-            setTimeout(() => {
-                // Verify again before navigating
-                const verifyRankings = localStorage.getItem('page_1_rankings');
-                if (!verifyRankings) {
-                    alert('Error saving rankings. Please try again.');
-                    return;
-                }
-                console.log('Verified rankings before navigation:', verifyRankings);
-                window.location.href = 'index2.html';
-            }, 500);
-        } catch (error) {
-            console.error('Error saving rankings:', error);
-            alert('Error saving rankings. Please try again.');
-        }
+        localStorage.setItem('page_1_rankings', JSON.stringify(rankings));
+        console.log('Saved page 1 rankings:', rankings);
+        window.location.href = 'index2.html';
     });
 
     // Initialize the page
