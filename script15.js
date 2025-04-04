@@ -128,15 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize Firebase (add this at the top of your script)
+    // Initialize Firebase
     const firebaseConfig = {
-        // Paste your Firebase config here
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyA1WUzEyIFdvzc4MxBDy2SatkGaQuIb2w0",
+        authDomain: "face-sr.firebaseapp.com",
+        databaseURL: "https://face-sr-default-rtdb.firebaseio.com",
+        projectId: "face-sr",
+        storageBucket: "face-sr.firebasestorage.app",
+        messagingSenderId: "384091299102",
+        appId: "1:384091299102:web:f63915dea8dbaeeaccfd0f"
     };
 
     // Initialize Firebase
@@ -168,11 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (pageRankings) {
                     try {
                         allRankings[`Page ${page}`] = JSON.parse(pageRankings);
+                        console.log(`Loaded rankings for page ${page}:`, allRankings[`Page ${page}`]);
                     } catch (e) {
                         console.error(`Error parsing rankings for page ${page}:`, e);
                     }
                 }
             }
+
+            console.log('Saving rankings to Firebase:', allRankings);
 
             // Save to Firebase
             const rankingsRef = database.ref('rankings/' + userId);
@@ -180,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 timestamp: firebase.database.ServerValue.TIMESTAMP,
                 rankings: allRankings
             });
+
+            console.log('Successfully saved to Firebase');
 
             // Clear local storage after successful submission
             for (let page = 1; page <= 15; page++) {
