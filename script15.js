@@ -147,10 +147,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if all images are ranked
     function checkAllRanked() {
-        const rankedCount = Array.from(imageItems)
-            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
-            .length;
+        const rankedItems = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0');
+        const rankedCount = rankedItems.length;
         const allRanked = rankedCount === 6;
+        
+        // Log detailed ranking information
+        console.log('Current rankings:');
+        imageItems.forEach((item, index) => {
+            const rank = item.dataset.rank;
+            const imageSrc = item.querySelector('.super-res-image')?.src.split('/').pop();
+            console.log(`Image ${index + 1} (${imageSrc}): ${rank || 'not ranked'}`);
+        });
+        
         if (nextButton) {
             nextButton.disabled = !allRanked;
         }
