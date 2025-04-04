@@ -79,8 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if all images are ranked
     function checkAllRanked() {
-        const rankedCount = Array.from(imageItems).filter(item => item.dataset.rank !== '').length;
-        nextBtn.disabled = rankedCount !== 6;
+        const rankedCount = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '0')
+            .length;
+        const allRanked = rankedCount === 6;
+        nextBtn.disabled = !allRanked;
+        console.log(`Ranked images: ${rankedCount}/6, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        return allRanked;
     }
 
     // Function to update rank overlays
@@ -88,10 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (rank) {
+            if (rank && rank !== '0') {
                 overlay.textContent = rank;
             } else {
                 overlay.textContent = '';
+                item.dataset.rank = '0';
             }
         });
     }
@@ -101,13 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageItem = e.currentTarget.closest('.image-item');
         const currentItemRank = imageItem.dataset.rank;
 
-        if (currentItemRank) {
+        if (currentItemRank && currentItemRank !== '0') {
             // If already ranked, remove rank
-            imageItem.dataset.rank = '';
+            imageItem.dataset.rank = '0';
             currentRank = 1; // Reset current rank
             // Reorder remaining ranks
             const rankedItems = Array.from(imageItems)
-                .filter(item => item.dataset.rank !== '')
+                .filter(item => item.dataset.rank !== '0')
                 .sort((a, b) => parseInt(a.dataset.rank) - parseInt(b.dataset.rank));
             
             rankedItems.forEach((item, index) => {
@@ -129,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to reset rankings
     function resetRankings() {
         imageItems.forEach(item => {
-            item.dataset.rank = '';
+            item.dataset.rank = '0';
         });
         currentRank = 1;
         updateRankOverlays();
@@ -138,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
+        item.dataset.rank = '0'; // Initialize with rank 0
         const wrapper = item.querySelector('.image-wrapper');
         wrapper.addEventListener('click', handleImageClick);
     });
