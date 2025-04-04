@@ -4,6 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-btn');
     const prevButton = document.getElementById('prev-btn');
 
+    // Initialize Firebase with error handling
+    let database;
+    try {
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1WUzEyIFdvzc4MxBDy2SatkGaQuIb2w0",
+            authDomain: "face-sr.firebaseapp.com",
+            databaseURL: "https://face-sr-default-rtdb.firebaseio.com",
+            projectId: "face-sr",
+            storageBucket: "face-sr.firebasestorage.app",
+            messagingSenderId: "384091299102",
+            appId: "1:384091299102:web:f63915dea8dbaeeaccfd0f"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        database = firebase.database();
+        console.log('Firebase initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Firebase:', error);
+        alert('Error initializing database. Please check console for details.');
+    }
+
     // Function to check if all images are ranked
     function areAllImagesRanked() {
         return Array.from(imageItems).every(item => item.dataset.rank !== '0');
@@ -146,38 +167,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyA1WUzEyIFdvzc4MxBDy2SatkGaQuIb2w0",
-        authDomain: "face-sr.firebaseapp.com",
-        databaseURL: "https://face-sr-default-rtdb.firebaseio.com",
-        projectId: "face-sr",
-        storageBucket: "face-sr.firebasestorage.app",
-        messagingSenderId: "384091299102",
-        appId: "1:384091299102:web:f63915dea8dbaeeaccfd0f"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
     // Function to submit rankings
     async function submitRankings() {
         try {
-            // Get or create user ID
-            let userId = localStorage.getItem('userId');
-            if (!userId) {
-                userId = 'user_' + Date.now();
-                localStorage.setItem('userId', userId);
+            if (!database) {
+                throw new Error('Database not initialized');
             }
 
-            // Save current page rankings
+            // Save current page rankings first
             const currentPageRankings = Array.from(imageItems)
                 .map(item => ({
                     imageId: item.querySelector('.super-res-image').src.split('/').pop(),
                     rank: parseInt(item.dataset.rank)
                 }))
                 .sort((a, b) => a.rank - b.rank);
+
+            console.log('Current page rankings:', currentPageRankings);
+
+            // Save current page rankings to localStorage
+            try {
+                localStorage.setItem('page_15_rankings', JSON.stringify(currentPageRankings));
+                console.log('Saved current page rankings to localStorage');
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+
+            // Get or create user ID
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Date.now();
+                localStorage.setItem('userId', userId);
+            }
+            console.log('Using userId:', userId);
 
             // Collect all available page rankings
             const allRankings = {};
@@ -190,10 +211,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     } catch (e) {
                         console.error(`Error parsing rankings for page ${page}:`, e);
                     }
+                } else {
+                    console.log(`No rankings found for page ${page}`);
                 }
             }
 
-            console.log('Saving rankings to Firebase:', allRankings);
+            if (Object.keys(allRankings).length === 0) {
+                throw new Error('No rankings found to submit');
+            }
+
+            console.log('Attempting to save rankings to Firebase:', allRankings);
 
             // Save to Firebase
             const rankingsRef = database.ref('rankings/' + userId);
