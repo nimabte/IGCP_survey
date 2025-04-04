@@ -34,8 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const imagePath = `image1/${imageFiles[index]}`;
             console.log(`Loading image: ${imagePath}`);
             img.src = imagePath;
-            img.onload = () => console.log(`Successfully loaded: ${imageFiles[index]}`);
-            img.onerror = (e) => console.error(`Error loading image: ${imageFiles[index]}`, e);
+            img.onload = () => {
+                console.log(`Successfully loaded: ${imageFiles[index]}`);
+                console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+            };
+            img.onerror = (e) => {
+                console.error(`Error loading image: ${imageFiles[index]}`);
+                console.error(`Image path: ${imagePath}`);
+                console.error(`Error details:`, e);
+                // Try to load with a different path format
+                const altPath = `./image1/${imageFiles[index]}`;
+                console.log(`Trying alternative path: ${altPath}`);
+                img.src = altPath;
+            };
         });
 
         // Initialize comparison sliders
