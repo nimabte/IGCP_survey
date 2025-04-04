@@ -7,20 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load images from the image1 folder
     function loadImages() {
-        console.log('Starting to load images for page 4...');
+        console.log('Starting to load images for page 3...');
         
         const referenceImage = document.getElementById('reference-img');
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        const refImagePath = 'image1/ref.png';
-        console.log('Loading reference image from:', refImagePath);
-        referenceImage.src = refImagePath;
-        referenceImage.onload = () => console.log('Reference image loaded successfully from:', refImagePath);
-        referenceImage.onerror = (e) => {
-            console.error('Error loading reference image from:', refImagePath);
-            console.error('Error details:', e);
-        };
+        referenceImage.src = './image1/ref.png';
+        referenceImage.onload = () => console.log('Reference image loaded successfully');
+        referenceImage.onerror = () => console.error('Error loading reference image');
         
         // Define the image filenames in order
         const imageFiles = [
@@ -29,19 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
             '3_codeformer.png',
             '4_DR2.jpg',
             '5_GPEN.png',
-            '6_GFPGAN.jpg'
+            '6_GFPGAN.jpg',
+            '7_PULSE.jpg',
+            '1_IGCP-v1.png',  // Reusing first image for now
+            '2_VQFR.jpg'      // Reusing second image for now
         ];
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
-            const imagePath = `image1/${imageFiles[index]}`;
-            console.log(`Loading image ${index + 1} from:`, imagePath);
-            img.src = imagePath;
-            img.onload = () => console.log(`Successfully loaded image ${index + 1}:`, imageFiles[index]);
-            img.onerror = (e) => {
-                console.error(`Error loading image ${index + 1} from:`, imagePath);
-                console.error('Error details:', e);
-            };
+            if (index < imageFiles.length) {
+                const imagePath = `./image1/${imageFiles[index]}`;
+                console.log(`Loading image ${index + 1}: ${imagePath}`);
+                img.src = imagePath;
+                img.onload = () => {
+                    console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                    console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
+                };
+                img.onerror = (e) => {
+                    console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
+                    console.error(`Image path: ${imagePath}`);
+                    console.error(`Error details:`, e);
+                };
+            } else {
+                console.warn(`No image file defined for index ${index}`);
+            }
         });
 
         // Initialize comparison sliders
@@ -90,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const rankedCount = Array.from(imageItems)
             .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
             .length;
-        const allRanked = rankedCount === 6;
+        const allRanked = rankedCount === 9;
         nextBtn.disabled = !allRanked;
-        console.log(`Ranked images: ${rankedCount}/6, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
         return allRanked;
     }
 
@@ -130,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentRank = rankedItems.length + 1;
         } else {
             // If not ranked and we haven't ranked all images
-            if (currentRank <= 6) {
+            if (currentRank <= 9) {
                 imageItem.dataset.rank = currentRank.toString();
                 currentRank++;
             }
