@@ -3,38 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
-    const submitBtn = document.getElementById('submit-btn');
     let currentRank = 1;
-
-    // Initialize Firebase with error handling
-    let database;
-    try {
-        const firebaseConfig = {
-            apiKey: "AIzaSyA1WUzEyIFdvzc4MxBDy2SatkGaQuIb2w0",
-            authDomain: "face-sr.firebaseapp.com",
-            databaseURL: "https://face-sr-default-rtdb.firebaseio.com",
-            projectId: "face-sr",
-            storageBucket: "face-sr.firebasestorage.app",
-            messagingSenderId: "384091299102",
-            appId: "1:384091299102:web:f63915dea8dbaeeaccfd0f"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        database = firebase.database();
-        console.log('Firebase initialized successfully');
-
-        // Test write to Firebase
-        const testRef = database.ref('test');
-        testRef.set({
-            timestamp: Date.now(),
-            status: 'connected'
-        })
-        .then(() => console.log('Test write to Firebase successful'))
-        .catch(error => console.error('Test write failed:', error));
-    } catch (error) {
-        console.error('Error initializing Firebase:', error);
-        alert('Error initializing database. Please check console for details.');
-    }
 
     // Function to load images from the image1 folder
     function loadImages() {
@@ -46,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load reference image
         referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = () => console.error('Error loading reference image');
+        referenceImage.onerror = (e) => console.error('Error loading reference image:', e);
         
         // Define the image filenames in order
         const imageFiles = [
@@ -188,30 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkAllRanked();
     }
 
-    // Function to submit rankings
-    function submitRankings() {
-        // Check if all images are ranked
-        if (!checkAllRanked()) {
-            alert('Please rank all images before submitting');
-            return;
-        }
-
-        // Get current page rankings
-        const rankings = Array.from(imageItems)
-            .map(item => ({
-                imageId: item.querySelector('.super-res-image').src.split('/').pop(),
-                rank: parseInt(item.dataset.rank)
-            }))
-            .sort((a, b) => a.rank - b.rank);
-
-        localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
-        console.log('Saved page 15 rankings:', rankings);
-        
-        // Redirect to the thank you page
-        alert('Thank you for your participation! Your rankings have been saved.');
-        window.location.href = 'thankyou.html';
-    }
-
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
         const wrapper = item.querySelector('.image-wrapper');
@@ -244,11 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Saved page 15 rankings:', rankings);
             window.location.href = 'index16.html';
         });
-    }
-
-    // Add submit button event listener
-    if (submitBtn) {
-        submitBtn.addEventListener('click', submitRankings);
     }
 
     // Initialize the page
