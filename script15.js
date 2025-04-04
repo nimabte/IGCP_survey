@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit-btn');
     const resetButton = document.getElementById('reset-btn');
     const prevButton = document.getElementById('prev-btn');
-    const nextButton = document.getElementById('next-btn');
     let currentRank = 1;
 
     // Initialize Firebase with error handling
@@ -163,10 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Image ${index + 1} (${imageSrc}): ${rank || 'not ranked'}`);
         });
         
-        if (nextButton) {
-            nextButton.disabled = !allRanked;
-        }
-        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        console.log(`Ranked images: ${rankedCount}/9`);
         return allRanked;
     }
 
@@ -327,22 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevButton) {
         prevButton.addEventListener('click', () => {
             window.location.href = 'index14.html';
-        });
-    }
-
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            // Store current page rankings before navigating
-            const rankings = Array.from(imageItems)
-                .map(item => ({
-                    imageId: item.querySelector('.super-res-image')?.src.split('/').pop(),
-                    rank: parseInt(item.dataset.rank)
-                }))
-                .sort((a, b) => a.rank - b.rank);
-
-            localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
-            console.log('Saved page 15 rankings:', rankings);
-            window.location.href = 'index16.html';
         });
     }
 
