@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
-    const resetBtn = document.getElementById('reset-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const submitBtn = document.getElementById('submit-btn');
+    const submitButton = document.getElementById('submit-btn');
+    const resetButton = document.getElementById('reset-btn');
+    const prevButton = document.getElementById('prev-btn');
     let currentRank = 1;
 
     // Initialize Firebase with error handling
@@ -41,12 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Starting to load images for page 15...');
         
         const referenceImage = document.getElementById('reference-img');
+        if (!referenceImage) {
+            console.error('Reference image element not found');
+            return;
+        }
+        
         const superResImages = document.querySelectorAll('.super-res-image');
+        if (superResImages.length === 0) {
+            console.error('No super-resolved images found');
+            return;
+        }
         
         // Load reference image
         referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = () => console.error('Error loading reference image');
+        referenceImage.onerror = (e) => {
+            console.error('Error loading reference image:', e);
+            console.error('Reference image path:', referenceImage.src);
+        };
         
         // Define the image filenames in order
         const imageFiles = [
@@ -90,9 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const sliders = document.querySelectorAll('.comparison-slider');
         const referenceImage = document.getElementById('reference-img');
         
+        if (!referenceImage) {
+            console.error('Reference image not found for slider initialization');
+            return;
+        }
+        
         sliders.forEach(slider => {
-            const imageWrapper = slider.closest('.image-item').querySelector('.image-wrapper');
+            const imageWrapper = slider.closest('.image-item')?.querySelector('.image-wrapper');
+            if (!imageWrapper) {
+                console.error('Image wrapper not found for slider');
+                return;
+            }
+            
             const superResImage = imageWrapper.querySelector('.super-res-image');
+            if (!superResImage) {
+                console.error('Super-resolved image not found for slider');
+                return;
+            }
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
@@ -124,14 +149,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if all images are ranked
     function checkAllRanked() {
-        const rankedCount = Array.from(imageItems)
-            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
-            .length;
+        const rankedItems = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0');
+        const rankedCount = rankedItems.length;
         const allRanked = rankedCount === 9;
-        if (nextBtn) {
-            nextBtn.disabled = !allRanked;
-        }
-        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        
+        // Log detailed ranking information
+        console.log('Current rankings:');
+        imageItems.forEach((item, index) => {
+            const rank = item.dataset.rank;
+            const imageSrc = item.querySelector('.super-res-image')?.src.split('/').pop();
+            console.log(`Image ${index + 1} (${imageSrc}): ${rank || 'not ranked'}`);
+        });
+        
+        console.log(`Ranked images: ${rankedCount}/9`);
         return allRanked;
     }
 
@@ -140,10 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (rank) {
-                overlay.textContent = rank;
-            } else {
-                overlay.textContent = '';
+            if (overlay) {
+                overlay.textContent = rank || '';
             }
         });
     }
@@ -151,6 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle image click
     function handleImageClick(e) {
         const imageItem = e.currentTarget.closest('.image-item');
+        if (!imageItem) return;
+        
         const currentItemRank = imageItem.dataset.rank;
 
         if (currentItemRank) {
@@ -189,66 +220,115 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to submit rankings
-    function submitRankings() {
-        // Check if all images are ranked
-        if (!checkAllRanked()) {
-            alert('Please rank all images before submitting');
-            return;
+    async function submitRankings() {
+        try {
+            if (!database) {
+                throw new Error('Database not initialized');
+            }
+
+            // Check if all images are ranked
+            if (!checkAllRanked()) {
+                throw new Error('Please rank all images before submitting');
+            }
+
+            // Get current page rankings first
+            const currentPageRankings = Array.from(imageItems)
+                .map(item => ({
+                    imageId: item.querySelector('.super-res-image')?.src.split('/').pop(),
+                    rank: parseInt(item.dataset.rank)
+                }))
+                .sort((a, b) => a.rank - b.rank);
+
+            console.log('Current page (15) rankings:', currentPageRankings);
+
+            // Save page 15 rankings to localStorage first
+            try {
+                localStorage.setItem('page_15_rankings', JSON.stringify(currentPageRankings));
+                console.log('Successfully saved page 15 rankings to localStorage');
+            } catch (e) {
+                console.error('Error saving page 15 rankings to localStorage:', e);
+                throw new Error('Failed to save page 15 rankings');
+            }
+
+            // Get or create user ID
+            let userId = localStorage.getItem('userId');
+            if (!userId) {
+                userId = 'user_' + Date.now();
+                localStorage.setItem('userId', userId);
+            }
+            console.log('Using userId:', userId);
+
+            // Collect all available page rankings
+            const allRankings = {};
+            
+            // Add page 15 rankings first
+            allRankings['Page 15'] = currentPageRankings;
+            
+            // Then add other pages
+            for (let page = 1; page <= 14; page++) {
+                const pageRankings = localStorage.getItem(`page_${page}_rankings`);
+                if (pageRankings) {
+                    try {
+                        allRankings[`Page ${page}`] = JSON.parse(pageRankings);
+                        console.log(`Loaded rankings for page ${page}:`, allRankings[`Page ${page}`]);
+                    } catch (e) {
+                        console.error(`Error parsing rankings for page ${page}:`, e);
+                    }
+                } else {
+                    console.log(`No rankings found for page ${page}`);
+                }
+            }
+
+            console.log('Final rankings to save:', allRankings);
+
+            // Save to Firebase
+            const rankingsRef = database.ref('rankings/' + userId);
+            await rankingsRef.set({
+                timestamp: firebase.database.ServerValue.TIMESTAMP,
+                rankings: allRankings
+            });
+
+            console.log('Successfully saved all rankings to Firebase');
+
+            // Clear local storage after successful submission
+            for (let page = 1; page <= 15; page++) {
+                localStorage.removeItem(`page_${page}_rankings`);
+            }
+            localStorage.removeItem('userId');
+
+            alert('Thank you for your participation! Your rankings have been saved successfully.');
+            window.location.href = 'thankyou.html';
+        } catch (error) {
+            console.error('Error submitting rankings:', error);
+            alert('Error saving rankings: ' + error.message);
         }
-
-        // Get current page rankings
-        const rankings = Array.from(imageItems)
-            .map(item => ({
-                imageId: item.querySelector('.super-res-image').src.split('/').pop(),
-                rank: parseInt(item.dataset.rank)
-            }))
-            .sort((a, b) => a.rank - b.rank);
-
-        localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
-        console.log('Saved page 15 rankings:', rankings);
-        
-        // Redirect to the thank you page
-        alert('Thank you for your participation! Your rankings have been saved.');
-        window.location.href = 'thankyou.html';
     }
 
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
         const wrapper = item.querySelector('.image-wrapper');
-        wrapper.addEventListener('click', handleImageClick);
+        if (wrapper) {
+            wrapper.addEventListener('click', handleImageClick);
+        } else {
+            console.error('Image wrapper not found for item:', item);
+        }
     });
 
     // Add reset button event listener
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetRankings);
+    if (resetButton) {
+        resetButton.addEventListener('click', resetRankings);
     }
 
     // Add navigation button event listeners
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+    if (prevButton) {
+        prevButton.addEventListener('click', () => {
             window.location.href = 'index14.html';
         });
     }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            // Store current page rankings before navigating
-            const rankings = Array.from(imageItems)
-                .map(item => ({
-                    imageId: item.querySelector('.super-res-image').src.split('/').pop(),
-                    rank: parseInt(item.dataset.rank)
-                }))
-                .sort((a, b) => a.rank - b.rank);
-
-            localStorage.setItem('page_15_rankings', JSON.stringify(rankings));
-            console.log('Saved page 15 rankings:', rankings);
-            window.location.href = 'index16.html';
-        });
-    }
-
     // Add submit button event listener
-    if (submitBtn) {
-        submitBtn.addEventListener('click', submitRankings);
+    if (submitButton) {
+        submitButton.addEventListener('click', submitRankings);
     }
 
     // Initialize the page

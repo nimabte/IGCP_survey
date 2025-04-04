@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Super-Resolution Evaluation - Page 15</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Image Super-Resolution Evaluation</h1>
+        <p class="instructions">Click on the images in order of their similarity to the reference image (1 being most similar, 9 being least similar). Click again to deselect.</p>
+        <p class="instructions">Use the slider below each image to compare it with the reference image.</p>
+        
+        <div class="reference-image">
+            <img id="reference-img" src="" alt="Reference Image">
+        </div>
+        
+        <div class="image-grid">
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 1">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+            
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 2">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+            
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 3">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+            
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 4">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+            
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 5">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+            
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 6">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 7">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 8">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+
+            <div class="image-item" data-rank="">
+                <div class="image-wrapper">
+                    <img class="super-res-image" src="" alt="Super-resolved Image 9">
+                    <div class="rank-overlay"></div>
+                </div>
+                <div class="comparison-slider-container">
+                    <input type="range" class="comparison-slider" min="0" max="100" value="100">
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="prev-btn">Previous Page</button>
+            <button id="reset-btn">Reset Rankings</button>
+            <button id="submit-btn">Submit Rankings</button>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="script15.js"></script>
+</body>
+</html> 
