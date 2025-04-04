@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
             '4_DR2.jpg',
             '5_GPEN.png',
             '6_GFPGAN.jpg',
-            '4_DR2.jpg',
-            '5_GPEN.png',
-            '6_GFPGAN.jpg',
+            '7_PULSE.jpg',
+            '1_IGCP-v1.png',  // Reusing first image for now
+            '2_VQFR.jpg'      // Reusing second image for now
         ];
         
         // Load super-resolved images
