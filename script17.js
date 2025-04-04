@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
     const resetBtn = document.getElementById('reset-btn');
-    const submitBtn = document.getElementById('submit-btn');
     const prevBtn = document.getElementById('prev-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
     function loadImages() {
-        console.log('Starting to load images for page 16...');
+        console.log('Starting to load images for page 17...');
         
         const referenceImage = document.getElementById('reference-img');
         if (!referenceImage) {
@@ -187,91 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkAllRanked();
     }
 
-    // Function to submit rankings
-    async function submitRankings() {
-        try {
-            if (!database) {
-                throw new Error('Database not initialized');
-            }
-
-            // Check if all images are ranked
-            if (!checkAllRanked()) {
-                throw new Error('Please rank all images before submitting');
-            }
-
-            // Get current page rankings
-            const currentPageRankings = Array.from(imageItems)
-                .map(item => ({
-                    imageId: item.querySelector('.super-res-image')?.src.split('/').pop(),
-                    rank: parseInt(item.dataset.rank)
-                }))
-                .sort((a, b) => a.rank - b.rank);
-
-            console.log('Current page (16) rankings:', currentPageRankings);
-
-            // Save page 16 rankings to localStorage first
-            try {
-                localStorage.setItem('page_16_rankings', JSON.stringify(currentPageRankings));
-                console.log('Successfully saved page 16 rankings to localStorage');
-            } catch (e) {
-                console.error('Error saving page 16 rankings to localStorage:', e);
-                throw new Error('Failed to save page 16 rankings');
-            }
-
-            // Get or create user ID
-            let userId = localStorage.getItem('userId');
-            if (!userId) {
-                userId = 'user_' + Date.now();
-                localStorage.setItem('userId', userId);
-            }
-            console.log('Using userId:', userId);
-
-            // Collect all available page rankings
-            const allRankings = {};
-            
-            // Add page 16 rankings first
-            allRankings['Page 16'] = currentPageRankings;
-            
-            // Then add other pages
-            for (let page = 1; page <= 15; page++) {
-                const pageRankings = localStorage.getItem(`page_${page}_rankings`);
-                if (pageRankings) {
-                    try {
-                        allRankings[`Page ${page}`] = JSON.parse(pageRankings);
-                        console.log(`Loaded rankings for page ${page}:`, allRankings[`Page ${page}`]);
-                    } catch (e) {
-                        console.error(`Error parsing rankings for page ${page}:`, e);
-                    }
-                } else {
-                    console.log(`No rankings found for page ${page}`);
-                }
-            }
-
-            console.log('Final rankings to save:', allRankings);
-
-            // Save to Firebase
-            const rankingsRef = database.ref('rankings/' + userId);
-            await rankingsRef.set({
-                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                rankings: allRankings
-            });
-
-            console.log('Successfully saved all rankings to Firebase');
-
-            // Clear local storage after successful submission
-            for (let page = 1; page <= 16; page++) {
-                localStorage.removeItem(`page_${page}_rankings`);
-            }
-            localStorage.removeItem('userId');
-
-            alert('Thank you for your participation! Your rankings have been saved successfully.');
-            window.location.href = 'thankyou.html';
-        } catch (error) {
-            console.error('Error submitting rankings:', error);
-            alert('Error saving rankings: ' + error.message);
-        }
-    }
-
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
         const wrapper = item.querySelector('.image-wrapper');
@@ -290,13 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add navigation button event listeners
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
-            window.location.href = 'index15.html';
+            window.location.href = 'index16.html';
         });
-    }
-
-    // Add submit button event listener
-    if (submitBtn) {
-        submitBtn.addEventListener('click', submitRankings);
     }
 
     // Initialize the page
