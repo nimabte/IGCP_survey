@@ -2,11 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
     function loadImages() {
-        console.log('Starting to load images...');
+        console.log('Starting to load images for page 1...');
         
         const referenceImage = document.getElementById('reference-img');
         const superResImages = document.querySelectorAll('.super-res-image');
@@ -151,10 +152,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add reset button event listener
     resetBtn.addEventListener('click', resetRankings);
 
-    // Add next button event listener
+    // Add navigation button event listeners
+    prevBtn.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+
     nextBtn.addEventListener('click', () => {
-        if (!checkAllRanked()) {
-            alert('Please rank all images before proceeding');
+        // Check if all images are ranked
+        const rankedCount = Array.from(imageItems).filter(item => item.dataset.rank !== '').length;
+        if (rankedCount !== 6) {
+            alert('Please rank all images before proceeding.');
             return;
         }
 
