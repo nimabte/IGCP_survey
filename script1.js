@@ -200,4 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the page
     loadImages();
+    resetRankings(); // Initialize rankings
+    nextBtn.disabled = true; // Start with next button disabled
 }); 
