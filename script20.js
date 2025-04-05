@@ -21,15 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
         database = firebase.database();
         console.log('Firebase initialized successfully');
-
-        // Test write to Firebase
-        const testRef = database.ref('test');
-        testRef.set({
-            timestamp: Date.now(),
-            status: 'connected'
-        })
-        .then(() => console.log('Test write to Firebase successful'))
-        .catch(error => console.error('Test write failed:', error));
     } catch (error) {
         console.error('Error initializing Firebase:', error);
         alert('Error initializing database. Please check console for details.');
