@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const imageItems = document.querySelectorAll('.image-item');
     const resetBtn = document.getElementById('reset-btn');
-    const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
     let currentRank = 1;
 
     // Function to load images from the image1 folder
@@ -10,24 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Starting to load images for page 17...');
         
         const referenceImage = document.getElementById('reference-img');
-        if (!referenceImage) {
-            console.error('Reference image element not found');
-            return;
-        }
-        
         const superResImages = document.querySelectorAll('.super-res-image');
-        if (superResImages.length === 0) {
-            console.error('No super-resolved images found');
-            return;
-        }
         
         // Load reference image
         referenceImage.src = './image1/ref.png';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
-        referenceImage.onerror = (e) => {
-            console.error('Error loading reference image:', e);
-            console.error('Reference image path:', referenceImage.src);
-        };
+        referenceImage.onerror = (e) => console.error('Error loading reference image:', e);
         
         // Define the image filenames in order
         const imageFiles = [
@@ -50,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = imagePath;
                 img.onload = () => {
                     console.log(`Successfully loaded image ${index + 1}: ${imageFiles[index]}`);
+                    console.log(`Image dimensions: ${img.naturalWidth}x${img.naturalHeight}`);
                 };
                 img.onerror = (e) => {
                     console.error(`Error loading image ${index + 1}: ${imageFiles[index]}`);
@@ -70,23 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const sliders = document.querySelectorAll('.comparison-slider');
         const referenceImage = document.getElementById('reference-img');
         
-        if (!referenceImage) {
-            console.error('Reference image not found for slider initialization');
-            return;
-        }
-        
         sliders.forEach(slider => {
-            const imageWrapper = slider.closest('.image-item')?.querySelector('.image-wrapper');
-            if (!imageWrapper) {
-                console.error('Image wrapper not found for slider');
-                return;
-            }
-            
+            const imageWrapper = slider.closest('.image-item').querySelector('.image-wrapper');
             const superResImage = imageWrapper.querySelector('.super-res-image');
-            if (!superResImage) {
-                console.error('Super-resolved image not found for slider');
-                return;
-            }
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
@@ -146,8 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (overlay) {
-                overlay.textContent = rank || '';
+            if (rank) {
+                overlay.textContent = rank;
+            } else {
+                overlay.textContent = '';
             }
         });
     }
@@ -197,11 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click event listeners to image wrappers
     imageItems.forEach(item => {
         const wrapper = item.querySelector('.image-wrapper');
-        if (wrapper) {
-            wrapper.addEventListener('click', handleImageClick);
-        } else {
-            console.error('Image wrapper not found for item:', item);
-        }
+        wrapper.addEventListener('click', handleImageClick);
     });
 
     // Add reset button event listener
@@ -216,14 +189,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Enable the Next button if all images are ranked
-    if (nextBtn) {
-        nextBtn.disabled = !checkAllRanked();
-    }
-
-    // Add next button event listener
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
+            // Store current page rankings before navigating
+            const rankings = Array.from(imageItems)
+                .map(item => ({
+                    imageId: item.querySelector('.super-res-image').src.split('/').pop(),
+                    rank: parseInt(item.dataset.rank)
+                }))
+                .sort((a, b) => a.rank - b.rank);
+
+            localStorage.setItem('page_17_rankings', JSON.stringify(rankings));
+            console.log('Saved page 17 rankings:', rankings);
             window.location.href = 'index18.html';
         });
     }

@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             localStorage.setItem('page_16_rankings', JSON.stringify(rankings));
             console.log('Saved page 16 rankings:', rankings);
-            window.location.href = 'index16.html';
+            window.location.href = 'index17.html';
         });
     }
 
