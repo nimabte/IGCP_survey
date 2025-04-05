@@ -93,14 +93,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if all images are ranked
     function checkAllRanked() {
-        const rankedCount = Array.from(imageItems)
-            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0')
-            .length;
+        const rankedItems = Array.from(imageItems)
+            .filter(item => item.dataset.rank !== '' && item.dataset.rank !== '0');
+        const rankedCount = rankedItems.length;
         const allRanked = rankedCount === 9;
+        
+        console.log('Current rankings:');
+        imageItems.forEach((item, index) => {
+            const rank = item.dataset.rank;
+            const imageSrc = item.querySelector('.super-res-image')?.src.split('/').pop();
+            console.log(`Image ${index + 1} (${imageSrc}): ${rank || 'not ranked'}`);
+        });
+        
+        console.log(`Ranked images: ${rankedCount}/9`);
+        
+        // Update Next button state
         if (nextBtn) {
             nextBtn.disabled = !allRanked;
+            console.log(`Next button ${allRanked ? 'enabled' : 'disabled'}`);
         }
-        console.log(`Ranked images: ${rankedCount}/9, Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        
         return allRanked;
     }
 
@@ -120,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle image click
     function handleImageClick(e) {
         const imageItem = e.currentTarget.closest('.image-item');
+        if (!imageItem) return;
+        
         const currentItemRank = imageItem.dataset.rank;
 
         if (currentItemRank) {
@@ -144,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateRankOverlays();
-        checkAllRanked();
+        checkAllRanked(); // This will update the Next button state
     }
 
     // Function to reset rankings
