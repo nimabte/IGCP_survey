@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load images from the image1 folder
     function loadImages() {
-        console.log('Starting to load images for page 15...');
+        console.log('Starting to load images for page 20...');
         
         const referenceImage = document.getElementById('reference-img');
         if (!referenceImage) {
@@ -239,15 +239,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }))
                 .sort((a, b) => a.rank - b.rank);
 
-            console.log('Current page (15) rankings:', currentPageRankings);
+            console.log('Current page (20) rankings:', currentPageRankings);
 
-            // Save page 15 rankings to localStorage first
+            // Save page 20 rankings to localStorage first
             try {
-                localStorage.setItem('page_15_rankings', JSON.stringify(currentPageRankings));
-                console.log('Successfully saved page 15 rankings to localStorage');
+                localStorage.setItem('page_20_rankings', JSON.stringify(currentPageRankings));
+                console.log('Successfully saved page 20 rankings to localStorage');
             } catch (e) {
-                console.error('Error saving page 15 rankings to localStorage:', e);
-                throw new Error('Failed to save page 15 rankings');
+                console.error('Error saving page 20 rankings to localStorage:', e);
+                throw new Error('Failed to save page 20 rankings');
             }
 
             // Get or create user ID
@@ -261,11 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Collect all available page rankings
             const allRankings = {};
             
-            // Add page 15 rankings first
-            allRankings['Page 15'] = currentPageRankings;
+            // Add page 20 rankings first
+            allRankings['Page 20'] = currentPageRankings;
             
             // Then add other pages
-            for (let page = 1; page <= 14; page++) {
+            for (let page = 1; page <= 19; page++) {
                 const pageRankings = localStorage.getItem(`page_${page}_rankings`);
                 if (pageRankings) {
                     try {
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Successfully saved all rankings to Firebase');
 
             // Clear local storage after successful submission
-            for (let page = 1; page <= 15; page++) {
+            for (let page = 1; page <= 20; page++) {
                 localStorage.removeItem(`page_${page}_rankings`);
             }
             localStorage.removeItem('userId');
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add navigation button event listeners
     if (prevButton) {
         prevButton.addEventListener('click', () => {
-            window.location.href = 'index14.html';
+            window.location.href = 'index19.html';
         });
     }
 
