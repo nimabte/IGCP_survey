@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allRankings['Page 16'] = currentPageRankings;
             
             // Then add other pages
-            for (let page = 1; page <= 15; page++) {
+            for (let page = 1; page <= 19; page++) {
                 const pageRankings = localStorage.getItem(`page_${page}_rankings`);
                 if (pageRankings) {
                     try {
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Successfully saved all rankings to Firebase');
 
             // Clear local storage after successful submission
-            for (let page = 1; page <= 16; page++) {
+            for (let page = 1; page <= 19; page++) {
                 localStorage.removeItem(`page_${page}_rankings`);
             }
             localStorage.removeItem('userId');
@@ -315,30 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add next button event listener
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
-            // Save rankings to JSON file
-            const rankings = {
-                page: 16,
-                timestamp: new Date().toISOString(),
-                rankings: Array.from(imageItems).map(item => ({
-                    image: item.querySelector('.super-res-image')?.src.split('/').pop(),
-                    rank: item.dataset.rank || '0'
-                }))
-            };
-
-            // Create a blob with the rankings data
-            const blob = new Blob([JSON.stringify(rankings, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            // Create a temporary link to download the file
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `rankings_page16_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            // Navigate to next page
             window.location.href = 'index17.html';
         });
     }
