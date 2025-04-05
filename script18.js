@@ -131,6 +131,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         console.log(`Ranked images: ${rankedCount}/9`);
+        
+        // Update Next button state
+        if (nextBtn) {
+            nextBtn.disabled = !allRanked;
+            console.log(`Next button ${allRanked ? 'enabled' : 'disabled'}`);
+        }
+        
         return allRanked;
     }
 
@@ -174,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         updateRankOverlays();
-        checkAllRanked();
+        checkAllRanked(); // This will update the Next button state
     }
 
     // Function to reset rankings
