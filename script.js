@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
-            refImage.src = 'Synthetic samples/sample_876/1_LQ_876.jpg'; // Use LQ image instead of HQ
+            refImage.src = 'Synthetic samples/sample_876/0_HQ_876.jpg'; // Use LQ image instead of HQ
             refImage.alt = 'Reference Image';
             refImage.className = 'reference-image-overlay';
             imageWrapper.appendChild(refImage);
