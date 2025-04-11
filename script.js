@@ -62,27 +62,28 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
-            refImage.src = referenceImage.src;
+            refImage.src = 'Synthetic samples/sample_876/1_LQ_876.jpg'; // Use LQ image instead of HQ
             refImage.alt = 'Reference Image';
             refImage.className = 'reference-image-overlay';
             imageWrapper.appendChild(refImage);
 
-            // Set initial slider position to rightmost (100%)
-            slider.value = 100;
-            // Set initial clip position to show full super-resolved image
-            imageWrapper.style.setProperty('--clip-position', '100%');
+            // Set initial slider position to leftmost (0%)
+            slider.value = 0;
+            // Set initial clip position to show full reference (LQ) image
+            imageWrapper.style.setProperty('--clip-position', '0%');
 
             // Handle slider input
             slider.addEventListener('input', (e) => {
                 const value = e.target.value;
-                imageWrapper.style.setProperty('--clip-position', `${value}%`);
+                // Reverse the value (100 - value) to show LQ on left
+                imageWrapper.style.setProperty('--clip-position', `${100 - value}%`);
             });
 
             // Reset slider on mouseup
             slider.addEventListener('mouseup', () => {
                 setTimeout(() => {
-                    slider.value = 100;
-                    imageWrapper.style.setProperty('--clip-position', '100%');
+                    slider.value = 0;
+                    imageWrapper.style.setProperty('--clip-position', '0%');
                 }, 1000);
             });
         });
