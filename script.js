@@ -67,23 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
             refImage.className = 'reference-image-overlay';
             imageWrapper.appendChild(refImage);
 
-            // Set initial slider position to leftmost (0%)
-            slider.value = 0;
-            // Set initial clip position to show full reference (LQ) image
-            imageWrapper.style.setProperty('--clip-position', '0%');
+            // Set initial slider position to rightmost (100%)
+            slider.value = 100;
+            // Set initial clip position to show full super-resolved image
+            imageWrapper.style.setProperty('--clip-position', '100%');
 
             // Handle slider input
             slider.addEventListener('input', (e) => {
                 const value = e.target.value;
-                // Reverse the value (100 - value) to show LQ on left
-                imageWrapper.style.setProperty('--clip-position', `${100 - value}%`);
+                imageWrapper.style.setProperty('--clip-position', `${value}%`);
             });
 
             // Reset slider on mouseup
             slider.addEventListener('mouseup', () => {
                 setTimeout(() => {
-                    slider.value = 0;
-                    imageWrapper.style.setProperty('--clip-position', '0%');
+                    slider.value = 100;
+                    imageWrapper.style.setProperty('--clip-position', '100%');
                 }, 1000);
             });
         });
