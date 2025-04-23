@@ -13,27 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = './image1/ref.png';
+        referenceImage.src = './Synthetic samples/sample_1160/0_HQ_1160.jpg';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
         referenceImage.onerror = () => console.error('Error loading reference image');
         
         // Define the image filenames in order
         const imageFiles = [
-            '1_IGCP-v1.png',
-            '2_VQFR.jpg',
-            '3_codeformer.png',
-            '4_DR2.jpg',
-            '5_GPEN.png',
-            '6_GFPGAN.jpg',
-            '7_PULSE.jpg',
-            '1_IGCP-v1.png',  // Reusing first image for now
-            '2_VQFR.jpg'      // Reusing second image for now
+            '7_restored_faces_IGPN_new_ep39_vqgan_dec_15000_1160.jpg',
+            '4_CodeFormer_1160.jpg',
+            '9_difface1160.png',
+            '2_GFPGAN_1160.jpg',
+            '5_VQFR_1160.jpg',
+            '6_DR2_1160.jpg',
+            '3_GPEN_1160.jpg',
+            '8_pgdiff_1160.jpg',
+            '10_difbir1160.png'
         ];
         
         // Load super-resolved images
         superResImages.forEach((img, index) => {
             if (index < imageFiles.length) {
-                const imagePath = `./image1/${imageFiles[index]}`;
+                const imagePath = `./Synthetic samples/sample_1160/${imageFiles[index]}`;
                 console.log(`Loading image ${index + 1}: ${imagePath}`);
                 img.src = imagePath;
                 img.onload = () => {
