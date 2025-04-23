@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load super-resolved images
         superResImages.forEach((img, index) => {
             if (index < imageFiles.length) {
-                const imagePath = `./Synthetic samples/sample_1084//${imageFiles[index]}`;
+                const imagePath = `./Synthetic samples/sample_1084/${imageFiles[index]}`;
                 console.log(`Loading image ${index + 1}: ${imagePath}`);
                 img.src = imagePath;
                 img.onload = () => {
