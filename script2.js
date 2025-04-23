@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = 'Synthetic samples/sample_1084/0_HQ_1084.jpg';
+        referenceImage.src = './Synthetic samples/sample_1084/0_HQ_1084.jpg';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
         referenceImage.onerror = () => console.error('Error loading reference image');
         
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load super-resolved images
         superResImages.forEach((img, index) => {
             if (index < imageFiles.length) {
-                const imagePath = `Synthetic samples/sample_1084//${imageFiles[index]}`;
+                const imagePath = `./Synthetic samples/sample_1084//${imageFiles[index]}`;
                 console.log(`Loading image ${index + 1}: ${imagePath}`);
                 img.src = imagePath;
                 img.onload = () => {
