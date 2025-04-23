@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const superResImages = document.querySelectorAll('.super-res-image');
         
         // Load reference image
-        referenceImage.src = './Synthetic samples/sample_12643/0_HQ_12634.jpg';
+        referenceImage.src = './Synthetic samples/sample_12643/0_HQ_12643.jpg';
         referenceImage.onload = () => console.log('Reference image loaded successfully');
         referenceImage.onerror = (e) => console.error('Error loading reference image:', e);
         
