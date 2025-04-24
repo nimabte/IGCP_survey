@@ -96,11 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (rank && rank !== '0') {
+            if (rank) {
                 overlay.textContent = rank;
             } else {
                 overlay.textContent = '';
-                item.dataset.rank = '0';
             }
         });
     }

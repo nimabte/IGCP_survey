@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Create a new image element for the reference image
             const refImage = document.createElement('img');
-            refImage.src = 'Synthetic samples/sample_876/0_HQ_876.jpg'; // Use LQ image instead of HQ
+            refImage.src = referenceImage.src;
             refImage.alt = 'Reference Image';
             refImage.className = 'reference-image-overlay';
             imageWrapper.appendChild(refImage);
@@ -104,11 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
         imageItems.forEach(item => {
             const overlay = item.querySelector('.rank-overlay');
             const rank = item.dataset.rank;
-            if (rank && rank !== '0') {
+            if (rank) {
                 overlay.textContent = rank;
             } else {
                 overlay.textContent = '';
-                item.dataset.rank = '0';
             }
         });
     }
@@ -169,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please rank all images before proceeding');
             return;
         }
-
         // Store current page rankings before navigating
         const rankings = Array.from(imageItems)
             .map(item => ({
