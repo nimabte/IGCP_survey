@@ -170,6 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     nextBtn.addEventListener('click', () => {
+        if (!checkAllRanked()) {
+            alert('Please rank all images before proceeding');
+            return;
+        }
+
         // Store current page rankings before navigating
         const rankings = Array.from(imageItems)
             .map(item => ({
